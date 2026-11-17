@@ -7,10 +7,8 @@ cp -avf "/ctx/system_files"/. /
 
 dnf install -y dnf5-plugins
 
-ADD https://negativo17.org/repos/fedora-multimedia.repo /etc/yum.repos.d/negativo17-fedora-multimedia.repo
-ADD https://negativo17.org/repos/fedora-steam.repo /etc/yum.repos.d/negativo17-fedora-steam.repo
-
 # Install negativo17 Codecs
+dnf config-manager addrepo --from-repofile=https://negativo17.org/repos/fedora-multimedia.repo
 dnf install -y --from-repo=fedora-multimedia \
     ffmpeg \
     ffmpeg-libs \
@@ -34,6 +32,7 @@ dnf install -y --from-repo=fedora-multimedia \
 && dnf clean all
 
 # Install negativo17 Steam
+dnf config-manager addrepo --from-repofile=https://negativo17.org/repos/fedora-steam.repo
 dnf install -y --from-repo=fedora-steam \
     steam \
 && dnf clean all
