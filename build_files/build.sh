@@ -5,15 +5,118 @@ set -ouex pipefail
 # Copy the contents of system_files/ of the git repo to /
 cp -avf "/ctx/system_files"/. /
 
-### Install packages
+dnf install -y dnf5-plugins
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
+ADD https://negativo17.org/repos/fedora-multimedia.repo /etc/yum.repos.d/negativo17-fedora-multimedia.repo
+ADD https://negativo17.org/repos/fedora-steam.repo /etc/yum.repos.d/negativo17-fedora-steam.repo
 
-# this installs a package from fedora repos
-dnf5 install -y tmux
+# Install negativo17 Codecs
+dnf install -y --from-repo=fedora-multimedia \
+    ffmpeg \
+    ffmpeg-libs \
+    intel-gmmlib \
+    intel-mediasdk \
+    intel-vaapi-driver \
+    libavcodec \
+    libfdk-aac \
+    libheif \
+    libva \
+    libva-intel-media-driver \
+    libva-utils \
+    mesa-dri-drivers \
+    mesa-filesystem \
+    mesa-libEGL \
+    mesa-libGL \
+    mesa-libgbm \
+    mesa-va-drivers \
+    mesa-vulkan-drivers \
+    pipewire-libs-extra \
+&& dnf clean all
+
+# Install negativo17 Steam
+dnf install -y --from-repo=fedora-steam \
+    steam \
+&& dnf clean all
+
+# Fedora Hardware Support packages
+dnf -y group install hardware-support
+
+#"Fedora GNOME Desktop packages
+dnf install -y \
+    baobab \
+    dconf \
+    gdm \
+    glycin-thumbnailer \
+    gnome-bluetooth \
+    gnome-boxes \
+    gnome-browser-connector \
+    gnome-calculator \
+    gnome-calendar \
+    gnome-characters \
+    gnome-color-manager \
+    gnome-control-center \
+    gnome-disk-utility \
+    gnome-epub-thumbnailer \
+    gnome-font-viewer \
+    gnome-initial-setup \
+    gnome-logs \
+    gnome-session-wayland-session \
+    gnome-settings-daemon \
+    gnome-shell \
+    gnome-text-editor \
+    gnome-user-share \
+    gst-thumbnailers \
+    gvfs-afc \
+    gvfs-fuse \
+    gvfs-goa \
+    gvfs-gphoto2 \
+    gvfs-mtp \
+    gvfs-smb \
+    librsvg2 \
+    localsearch \
+    loupe \
+    ModemManager \
+    nautilus \
+    NetworkManager-adsl \
+    NetworkManager-openconnect-gnome \
+    NetworkManager-openvpn-gnome \
+    NetworkManager-ppp \
+    NetworkManager-ssh-gnome \
+    NetworkManager-vpnc-gnome \
+    NetworkManager-wwan \
+    papers \
+    papers-nautilus \
+    ptyxis \
+    snapshot \
+    sushi \
+    systemd-oomd-defaults \
+    tinysparql \
+    xdg-desktop-portal \
+    xdg-desktop-portal-gnome \
+    xdg-user-dirs-gtk
+
+# Additional packages
+dnf install -y \
+    adw-gtk3-theme \
+    bash-color-prompt \
+    fedora-flathub-remote \
+    fuse-libs \
+    gamemode \
+    git \
+    glibc-langpack-en \
+    libcamera-gstreamer \
+    libcamera-tools \
+    libimobiledevice-utils \
+    libratbag-ratbagd \
+    libvirt \
+    libvirt-nss \
+    mtr \
+    rclone \
+    rsync \
+    symlinks \
+    uv \
+    virt-manager \
+&& dnf clean all
 
 # Use a COPR Example:
 #
@@ -23,9 +126,9 @@ dnf5 install -y tmux
 # dnf5 -y copr disable ublue-os/staging
 
 #### Example for enabling a System Unit File
-
 systemctl enable podman.socket
 
+# Install Nvidia-open akmod
 IMAGE_NAME=silverblue /tmp/akmods-rpms/ublue-os/nvidia-install.sh
 
 KERNEL_VERSION="$(rpm -q --queryformat='%{VERSION}-%{RELEASE}.%{ARCH}' kernel-core)"
