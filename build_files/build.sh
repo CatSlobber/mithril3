@@ -5,6 +5,7 @@ set -ouex pipefail
 # Copy the contents of system_files/ of the git repo to /
 cp -avf "/ctx/system_files"/. /
 
+# Install dnf plugins for config-manager and copr functionality
 dnf install -y dnf5-plugins
 
 # Install negativo17 Codecs
