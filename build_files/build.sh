@@ -6,9 +6,6 @@ set -ouex pipefail
 cp -avf "/ctx/system_files"/. /
 
 # Install negativo17 Codecs
-dnf config-manager addrepo --from-repofile=https://negativo17.org/repos/fedora-multimedia.repo
-sudo dnf config-manager setopt fedora-multimedia.enabled=1
-sudo dnf config-manager setopt fedora-multimedia.priority=90
 dnf install -y --from-repo=fedora-multimedia \
     intel-gmmlib \
     intel-mediasdk \
@@ -27,8 +24,6 @@ dnf install -y --from-repo=fedora-multimedia \
 
 # Install negativo17 Steam
 dnf config-manager addrepo --from-repofile=https://negativo17.org/repos/fedora-steam.repo
-sudo dnf config-manager setopt fedora-steam.enabled=1
-sudo dnf config-manager setopt fedora-steam.priority=90
 dnf install -y --from-repo=fedora-steam \
     steam \
 && dnf clean all
