@@ -1,0 +1,8 @@
+kargs = [
+  "rhgb",
+  "quiet",
+  "loglevel=4",
+  "rd.systemd.show_status=auto",
+  "systemd.show_status=auto",
+  "rd.vconsole.keymap=en"
+]
