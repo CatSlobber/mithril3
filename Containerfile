@@ -3,14 +3,11 @@ FROM scratch AS ctx
 COPY build_files /
 COPY system_files /system_files
 
-# Base Image
+# Base image
 FROM ghcr.io/ublue-os/akmods-nvidia-open:main-45 AS nvidia-akmods
-FROM quay.io/fedora/fedora-bootc:45
+FROM ghcr.io/ublue-os/silverblue-main:45
 
-### MODIFICATIONS
-## make modifications desired in your image and install packages by modifying the build.sh script
-## the following RUN directive does all the things required to run "build.sh" as recommended.
-
+# Image modifications
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
